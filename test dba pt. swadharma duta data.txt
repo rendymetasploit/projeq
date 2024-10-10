@@ -1,0 +1,87 @@
+﻿CREATE TABLE [dbo].[Data_Toko](
+[KodeToko] nvarchar NOT NULL,
+[NamaToko] nvarchar NULL,
+[AlamatToko] nvarchar NULL,
+[CreatedBy] nvarchar NULL,
+[EntryTime] [datetime] NULL,
+[LastUpdateBy] nvarchar NULL,
+[LastUpdate] [datetime] NULL,
+CONSTRAINT [PK_Data_Toko] PRIMARY KEY CLUSTERED
+(
+[KodeToko] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+CREATE TABLE [dbo].[Data_Pembeli](
+[KodePembeli] nvarchar NOT NULL,
+[Nama] nvarchar NULL,
+[NomorIdentitas] nvarchar NULL,
+[JenisKelamin] nvarchar NULL,
+[Alamat] nvarchar NULL,
+[NomorHP] nvarchar NULL,
+[CreatedBy] nvarchar NULL,
+[EntryTime] [datetime] NULL,
+[LastUpdateBy] nvarchar NULL,
+[LastUpdate] [datetime] NULL,
+CONSTRAINT [PK_Data_Pembeli] PRIMARY KEY CLUSTERED
+(
+[KodePembeli] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+CREATE TABLE [dbo].[Data_Barang](
+[KodeBarang] nvarchar NOT NULL,
+[NamaBarang] nvarchar NULL,
+[KategoriBarang] nvarchar NULL,
+[JumlahBarang] [decimal](10, 10) NULL,
+[Keterangan] nvarchar NULL,
+[CreatedBy] nvarchar NULL,
+[EntryTime] [datetime] NULL,
+[LastUpdateBy] nvarchar NULL,
+[LastUpdate] [datetime] NULL,
+CONSTRAINT [PK_Data_Barang] PRIMARY KEY CLUSTERED
+(
+[KodeBarang] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+CREATE TABLE [dbo].[Data_Penjualan](
+[KodePenjualan] nvarchar NOT NULL,
+[KodeBarang] nvarchar NULL,
+[KodeToko] nvarchar NULL,
+[KodePembeli] nvarchar NULL,
+[JumlahBeli] [decimal](10, 10) NULL,
+[TanggalBeli] [date] NULL,
+[Createdy] nvarchar NULL,
+[EntryTime] [datetime] NULL,
+[LastUpdateBy] nvarchar NULL,
+[LastUpdate] [datetime] NULL,
+CONSTRAINT [PK_Data_Penjualan] PRIMARY KEY CLUSTERED
+(
+[KodePenjualan] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Data_Penjualan]  WITH CHECK ADD  CONSTRAINT [FK_Data_Penjualan_Data_Barang] FOREIGN KEY([KodeBarang])
+REFERENCES [dbo].[Data_Barang] ([KodeBarang])
+GO
+ALTER TABLE [dbo].[Data_Penjualan] CHECK CONSTRAINT [FK_Data_Penjualan_Data_Barang]
+GO
+ALTER TABLE [dbo].[Data_Penjualan]  WITH CHECK ADD  CONSTRAINT [FK_Data_Penjualan_Data_Pembeli] FOREIGN KEY([KodePembeli])
+REFERENCES [dbo].[Data_Pembeli] ([KodePembeli])
+GO
+ALTER TABLE [dbo].[Data_Penjualan] CHECK CONSTRAINT [FK_Data_Penjualan_Data_Pembeli]
+GO
+ALTER TABLE [dbo].[Data_Penjualan]  WITH CHECK ADD  CONSTRAINT [FK_Data_Penjualan_Data_Toko] FOREIGN KEY([KodeToko])
+REFERENCES [dbo].[Data_Toko] ([KodeToko])
+GO
+ALTER TABLE [dbo].[Data_Penjualan] CHECK CONSTRAINT [FK_Data_Penjualan_Data_Toko]
+GO
+CREATE NONCLUSTERED INDEX [idx_Kode] ON [dbo].[Data_Penjualan]
+(
+[KodeToko] ASC,
+[KodePembeli] ASC,
+[KodeBarang] ASC,
+[KodePenjualan] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
